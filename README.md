@@ -4,6 +4,7 @@ A comprehensive learning platform featuring organized books with chapters, video
 
 **GitHub:** [SumitKumar621/AcadHub](https://github.com/SumitKumar621/AcadHub)
 **Live link:** ([Open (https://acadhub.onrender.com/)](https://acadhub.onrender.com/))
+**Demo Video:** [https://drive.google.com/file/d/1YtuRJIaUMeDyOtm1oNkAKrQENvZkAO7h/view?usp=sharing](https://drive.google.com/file/d/1YtuRJIaUMeDyOtm1oNkAKrQENvZkAO7h/view?usp=sharing)
 
 ---
 
