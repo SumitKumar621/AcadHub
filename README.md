@@ -264,6 +264,20 @@ npm run lint
 
 ## Deployment
 
+### Deploy to Render
+1. Push code to GitHub
+2. Create new Web Service on [Render](https://render.com/)
+3. Connect to your GitHub repository
+4. Configure build and start commands:
+   - **Build Command:** `npm install && npm run build`
+   - **Start Command:** `npm start`
+5. Add environment variables in Render dashboard:
+   - `DATABASE_URL`
+   - `GEMINI_API_KEY`
+   - `JWT_SECRET`
+   - `NODE_ENV=production`
+6. Deploy (automatic on push)
+
 ### Deploy to Railway
 1. Push code to GitHub
 2. Connect Railway to repository
@@ -273,12 +287,13 @@ npm run lint
    - `JWT_SECRET`
 4. Deploy
 
-### Deploy to Vercel
+### Deploy to Other Platforms
+#### Vercel
 1. Connect GitHub repository
 2. Add environment variables
 3. Deploy (automatic on push)
 
-### Deploy to Netlify
+#### Netlify
 1. Connect GitHub repository
 2. Build command: `npm run build`
 3. Publish directory: `.next`
