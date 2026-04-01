@@ -504,7 +504,6 @@ This weights active signals (clicking, watching) more heavily than passive ones 
 **Recommended: Vercel (frontend) + Railway (PostgreSQL)**
 
 1. Push to GitHub
-2. Import repo on [vercel.com](https://vercel.com)
 3. Create a PostgreSQL database on [railway.app](https://railway.app)
 4. Add `DATABASE_URL` to Vercel environment variables
 5. Run `npm run db:migrate` once against your production database
