@@ -1,0 +1,233 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.main {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: 2.5rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--ink-2);
+  font-size: 0.95rem;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.statCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  transition: all 0.3s ease;
+}
+
+.statCard:hover {
+  border-color: var(--border-mid);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
+.statContent {
+  flex: 1;
+}
+
+.statLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--ink-3);
+  margin-bottom: 0.5rem;
+}
+
+.statValue {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.statDesc {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+  margin-top: 0.5rem;
+  line-height: 1.4;
+}
+
+.statIcon {
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-left: 1rem;
+}
+
+.icon1 { background: linear-gradient(135deg, #a78bfa10, #c4b5fd10); }
+.icon2 { background: linear-gradient(135deg, #f47bbc10, #ec4899b0); }
+.icon3 { background: linear-gradient(135deg, #10b98110, #34d39910); }
+
+.searchContainer {
+  margin-bottom: 2rem;
+}
+
+.searchInput {
+  width: 100%;
+  max-width: 600px;
+  padding: 0.875rem 1rem;
+  font-size: 0.95rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  color: var(--ink);
+  transition: all 0.2s ease;
+}
+
+.searchInput::placeholder {
+  color: var(--ink-3);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+}
+
+.bookGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.bookCard {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.bookCard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+}
+
+.bookCardHeader {
+  padding: 1.5rem;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.bookCardHeader:hover {
+  background: var(--surface2);
+}
+
+.bookTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ink);
+  margin-bottom: 0.5rem;
+}
+
+.bookDesc {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+
+.chapterList {
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  background: var(--surface2);
+}
+
+.chapterLink {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.chapterLink:last-child {
+  margin-bottom: 0;
+}
+
+.chapterLink:hover {
+  background: rgba(79, 70, 229, 0.08);
+  padding-left: 1rem;
+}
+
+.chapterOrder {
+  font-weight: 600;
+  color: var(--ink-3);
+  font-family: var(--mono);
+}
+
+.chapterTitle {
+  flex: 1;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .bookGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.noResults {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem;
+  color: var(--ink-2);
+  font-size: 1.1rem;
+  background: var(--surface);
+  border-radius: 12px;
+  border: 1px dashed var(--border);
+}

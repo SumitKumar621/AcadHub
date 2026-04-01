@@ -1,0 +1,93 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.navLeft {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  font-family: var(--sans);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.navRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.navLink {
+  color: var(--ink-2);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.15s ease;
+}
+
+.navLink:hover {
+  color: var(--accent);
+}
+
+.loginBtn {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #fff;
+  padding: 0.5rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.loginBtn:hover {
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.profileBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.profileBtn:hover {
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.logoutBtnNav {
+  background: transparent;
+  color: var(--ink-2);
+  border: none;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.15s ease;
+}
+
+.logoutBtnNav:hover {
+  color: #dc2626;
+}

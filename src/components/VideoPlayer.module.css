@@ -1,0 +1,103 @@
+.player {
+  background: linear-gradient(135deg, #f9f9fb 0%, #f3f4f8 100%);
+  border-radius: var(--radius-lg);
+  height: 190px;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+  margin-bottom: 14px;
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* Diagonal stripe texture */
+.player::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 20px,
+    rgba(99,102,241,0.02) 20px,
+    rgba(99,102,241,0.02) 21px
+  );
+  pointer-events: none;
+}
+
+.player:hover {
+  border-color: var(--border-mid);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.08);
+}
+
+.player.playing {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 28px;
+  gap: 22px;
+}
+
+.playBtn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(99, 102, 241, 0.3);
+  background: rgba(99, 102, 241, 0.08);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+
+.player:hover .playBtn {
+  background: rgba(99, 102, 241, 0.15);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.player.playing .playBtn {
+  background: rgba(99, 102, 241, 0.2);
+  border-color: var(--accent);
+}
+
+.meta { display: flex; flex-direction: column; gap: 5px; }
+
+.videoLabel {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+  font-family: var(--sans);
+}
+
+.timer {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--ink-3);
+  letter-spacing: 0.04em;
+}
+
+.progressTrack {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.06);
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  transition: width 0.9s linear;
+}
