@@ -1,36 +1,125 @@
-# AcadHub — Content Analytics Platform
+# AcadHub — Structured Learning Platform with Analytics
 
-A structured learning platform (Books → Chapters → Content) with real-time analytics tracking. Built with Next.js 14 App Router, PostgreSQL, and Node.js.
+A comprehensive learning platform featuring organized books with chapters, video lessons, user authentication, route protection, and real-time analytics tracking. Built with **Next.js 16.2.1**, **TypeScript**, **PostgreSQL**, and **Tailwind CSS**.
 
-**Live URL:** _add after deployment_  
-**Demo video:** _add Loom link_
+**GitHub:** [SumitKumar621/AcadHub](https://github.com/SumitKumar621/AcadHub)
+
+---
+
+## Features
+
+✨ **Learning System**
+- 📚 Organized books with multiple chapters
+- 🎥 Video lessons with watch duration tracking
+- 📝 Rich text content with markdown support
+- 🎯 Action buttons (Mark Complete, Download Notes, Take Quiz, Ask Question, Bookmark)
+
+🔐 **Authentication & Security**
+- User registration and login
+- JWT token-based authentication
+- HttpOnly secure cookies
+- Password hashing with PBKDF2
+- Route protection middleware
+
+📊 **Analytics Dashboard**
+- Real-time user interaction tracking
+- Button click analytics
+- Video watch time metrics
+- Content engagement scoring
+- Interactive data tables with expandable rows
 
 ---
 
 ## Quick Start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/AcadHub
+# Clone repository
+git clone https://github.com/SumitKumar621/AcadHub.git
 cd AcadHub
+
+# Install dependencies
 npm install
 
-# Set up your database
+# Set up environment variables
 cp .env.example .env.local
-# Add your DATABASE_URL to .env.local
+# Add your DATABASE_URL and GEMINI_API_KEY to .env.local
 
-# Run migrations
-npm run db:migrate
+# Run database migrations
+node migrations/run.js
 
-# Start dev server
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000)
 
-### Environment variables
+---
+
+## Environment Variables
+
+Create `.env.local` in the root directory:
+
+```env
+# Database
+DATABASE_URL=postgresql://user:password@host:5432/acadhub
+
+# API Keys
+GEMINI_API_KEY=your_gemini_api_key_here
+
+# JWT
+JWT_SECRET=your_jwt_secret_key_here
+
+# Environment
+NODE_ENV=development
+```
+
+---
+
+## Project Structure
 
 ```
-DATABASE_URL=postgresql://user:password@host:5432/AcadHub
+src/
+├── app/
+│   ├── api/
+│   │   ├── auth/              # Authentication routes
+│   │   │   ├── login/
+│   │   │   ├── logout/
+│   │   │   ├── register/
+│   │   │   ├── me/
+│   │   │   └── profile/
+│   │   └── analytics/         # Analytics tracking
+│   │       ├── pageview/
+│   │       ├── click/
+│   │       ├── watch/
+│   │       └── dashboard/
+│   ├── login/                 # Login page
+│   ├── dashboard/             # Main dashboard
+│   ├── books/                 # Learning center
+│   │   ├── page.tsx          # Books listing
+│   │   ├── [bookId]/         # Chapter selection
+│   │   │   └── [chapterId]/  # Chapter content
+│   ├── analytics/             # Analytics dashboard
+│   ├── profile/               # User profile
+│   └── layout.tsx
+├── components/                # Reusable components
+│   ├── Sidebar.tsx
+│   ├── Navbar.tsx
+│   ├── VideoPlayer.tsx
+│   ├── ActionButton.tsx
+│   ├── QuizModal.tsx
+│   ├── Askquestionmodal.tsx
+│   ├── PageViewTracker.tsx
+│   └── ...
+├── lib/
+│   ├── AuthContext.tsx        # Auth provider
+│   ├── auth.ts                # JWT & password utils
+│   ├── db.ts                  # Database connection
+│   ├── content.ts             # Learning content data
+│   ├── session.ts
+│   └── ...
+└── globals.css
+├── middleware.ts              # Route protection
+└── migrations/                # Database setup
 ```
 
 ---
@@ -38,15 +127,277 @@ DATABASE_URL=postgresql://user:password@host:5432/AcadHub
 ## Database Schema
 
 ```sql
--- Append-only event logs (never updated, only inserted)
-button_clicks        (id, user_id, button_label, content_id, clicked_at)
-video_watch_events   (id, user_id, video_id, content_id, watched_seconds, recorded_at)
-page_views           (id, user_id, content_id, viewed_at)
+-- Users
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- Pre-aggregated / denormalised for fast dashboard reads
-click_counts_agg     (content_id, button_label, click_count, last_updated)  -- PK: (content_id, button_label)
-engagement_scores    (content_id, button_clicks, watch_seconds, page_views, score, last_updated)  -- PK: content_id
+-- Analytics - Append-only event logs
+CREATE TABLE page_views (
+  id SERIAL PRIMARY KEY,
+  user_id VARCHAR(50),
+  content_id VARCHAR(50),
+  viewed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE video_watch_events (
+  id SERIAL PRIMARY KEY,
+  user_id VARCHAR(50),
+  video_id VARCHAR(50),
+  content_id VARCHAR(50),
+  watched_seconds INT,
+  recorded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE button_clicks (
+  id SERIAL PRIMARY KEY,
+  user_id VARCHAR(50),
+  button_label VARCHAR(100),
+  content_id VARCHAR(50),
+  clicked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Pre-aggregated for fast dashboard reads
+CREATE TABLE engagement_scores (
+  content_id VARCHAR(50) PRIMARY KEY,
+  button_clicks INT DEFAULT 0,
+  watch_seconds INT DEFAULT 0,
+  page_views INT DEFAULT 0,
+  score FLOAT,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 ```
+
+---
+
+## API Endpoints
+
+### Authentication
+```
+POST   /api/auth/register        - Register new user
+POST   /api/auth/login           - Login user
+GET    /api/auth/me              - Get current user
+POST   /api/auth/logout          - Logout user
+PUT    /api/auth/profile         - Update profile
+```
+
+### Analytics
+```
+POST   /api/analytics/pageview   - Track page view
+POST   /api/analytics/click      - Track button click
+POST   /api/analytics/watch      - Track video watch
+GET    /api/analytics/dashboard  - Get analytics data
+```
+
+---
+
+## Protected Routes
+
+These routes require authentication:
+- `/dashboard` - Main dashboard
+- `/books` - Learning content
+- `/books/[bookId]` - Book chapters
+- `/books/[bookId]/[chapterId]` - Chapter content
+- `/analytics` - Analytics dashboard
+- `/profile` - User profile
+
+Public routes:
+- `/login` - Login page
+- `/api/auth/*` - Auth endpoints
+
+Middleware automatically redirects unauthorized users to `/login`.
+
+---
+
+## Authentication Flow
+
+```
+User Registration → Verify Email → Login
+                                      ↓
+                              JWT Token Generated
+                              (HttpOnly Cookie)
+                                      ↓
+                              Access Protected Routes
+                                      ↓
+                              Middleware Validates Token
+                                      ↓
+                              Route Protection
+                                      ↓
+                              Logout (Clear Cookie)
+```
+
+---
+
+## Development
+
+### Install Dependencies
+```bash
+npm install
+```
+
+### Run Development Server
+```bash
+npm run dev
+```
+
+### Build for Production
+```bash
+npm run build
+npm start
+```
+
+### Type Checking
+```bash
+npm run type-check
+```
+
+### Linting
+```bash
+npm run lint
+```
+
+---
+
+## Deployment
+
+### Deploy to Railway
+1. Push code to GitHub
+2. Connect Railway to repository
+3. Add environment variables:
+   - `DATABASE_URL`
+   - `GEMINI_API_KEY`
+   - `JWT_SECRET`
+4. Deploy
+
+### Deploy to Vercel
+1. Connect GitHub repository
+2. Add environment variables
+3. Deploy (automatic on push)
+
+### Deploy to Netlify
+1. Connect GitHub repository
+2. Build command: `npm run build`
+3. Publish directory: `.next`
+4. Add environment variables
+
+---
+
+## Key Features Explained
+
+### 🔐 Route Protection
+- Server-side middleware checks JWT tokens
+- Client-side auth guards prevent unauthorized access
+- Automatic redirect to login for protected routes
+
+### 📊 Analytics System
+- Real-time event tracking
+- Append-only database logs
+- Pre-aggregated engagement scores
+- Interactive dashboard with charts
+
+### 🎓 Learning Content
+- Structured books with chapters
+- Video integration with tracking
+- Rich text content
+- Progress tracking
+
+### 👤 User Management
+- Secure registration
+- Password hashing
+- Profile updates
+- Session management
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | Next.js 16.2.1, React 19, TypeScript, Tailwind CSS |
+| Backend | Next.js API Routes, Node.js |
+| Database | PostgreSQL |
+| Authentication | JWT, bcrypt/PBKDF2 |
+| Styling | CSS Modules, Tailwind CSS |
+| Deployment | Railway, Vercel, Netlify |
+
+---
+
+## Performance Optimizations
+
+- ⚡ Server-side rendering (SSR) for SEO
+- 🎯 Static generation for content pages
+- 🗜️ CSS modules for scoped styling
+- 📦 Code splitting and lazy loading
+- 🔄 Database query optimization
+- 💾 Pre-aggregated analytics data
+
+---
+
+## Security Features
+
+- 🔐 PBKDF2 password hashing
+- 🛡️ JWT token authentication
+- 🍪 HttpOnly cookies
+- 🚫 CSRF protection via middleware
+- ✔️ Input validation
+- 🔒 Secure environment variables
+
+---
+
+## Contributing
+
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
+
+---
+
+## Roadmap
+
+- [ ] Quiz system with scoring
+- [ ] Certificate generation
+- [ ] Discussion forums
+- [ ] Peer review system
+- [ ] Progress tracking and streaks
+- [ ] Mobile app
+- [ ] AI-powered recommendations
+- [ ] Social features
+- [ ] Advanced analytics
+
+---
+
+## License
+
+MIT License - see LICENSE file for details
+
+---
+
+## Support
+
+For support, open an issue on GitHub or contact [support@acadhub.com](mailto:support@acadhub.com)
+
+---
+
+## Author
+
+**Sumit Kumar**
+- GitHub: [@SumitKumar621](https://github.com/SumitKumar621)
+- Project: [AcadHub](https://github.com/SumitKumar621/AcadHub)
+
+---
+
+## Acknowledgments
+
+- Next.js team
+- PostgreSQL community
+- All contributors
+- Open source community
 
 ### Why this shape?
 
