@@ -3,6 +3,7 @@
 A comprehensive learning platform featuring organized books with chapters, video lessons, user authentication, route protection, and real-time analytics tracking. Built with **Next.js 16.2.1**, **TypeScript**, **PostgreSQL**, and **Tailwind CSS**.
 
 **GitHub:** [SumitKumar621/AcadHub](https://github.com/SumitKumar621/AcadHub)
+**Live link:** ([Open http://localhost:3000](https://acadhub.onrender.com/))
 
 ---
 
@@ -51,7 +52,7 @@ node migrations/run.js
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000)
+
 
 ---
 
